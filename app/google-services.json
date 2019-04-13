@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "913170695591",
+    "firebase_url": "https://census2019-325bc.firebaseio.com",
+    "project_id": "census2019-325bc",
+    "storage_bucket": "census2019-325bc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:913170695591:android:e9d651e527d4bffc",
+        "android_client_info": {
+          "package_name": "com.example.android.census2019"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "913170695591-39o18npbnl8bpu3h3a9h9pdd5schc5mq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.android.census2019",
+            "certificate_hash": "a38dba3977e3951ff6750b805c525d1e35802374"
+          }
+        },
+        {
+          "client_id": "913170695591-eis3svj4md9354ibqjesofv6c153qcqn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCHcP0qrqwXe-Gxp9k-aMh8p2lL4mnB8XU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "913170695591-eis3svj4md9354ibqjesofv6c153qcqn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

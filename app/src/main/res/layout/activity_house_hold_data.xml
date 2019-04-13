@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:padding="16dp"
+    tools:context=".Activities.HouseHoldDataActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <!--HouseHold head EditBox-->
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/EditTextMargin">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/household_head"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:hint="@string/household_head" />
+
+        </android.support.design.widget.TextInputLayout>
+        <!--ID editView-->
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/EditTextMargin">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:hint="@string/id" />
+
+        </android.support.design.widget.TextInputLayout>
+        <!--Spouses Spinner-->
+        <Spinner
+            android:id="@+id/spinnerSpouses"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            style="@style/EditTextMargin"/>
+
+        <!-- County EditText -->
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/EditTextMargin">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/county"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:hint="@string/county" />
+        </android.support.design.widget.TextInputLayout>
+        <!-- Sub-County EditText -->
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/EditTextMargin">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/sub_county"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:hint="@string/sub_county" />
+        </android.support.design.widget.TextInputLayout>
+        <!-- Town EditText -->
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+             style="@style/EditTextMargin">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/town"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:hint="@string/town" />
+
+
+        </android.support.design.widget.TextInputLayout>
+        <!--No. of adult children-->
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/EditTextMargin">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/adult_children"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:hint="@string/no_of_adult_children" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <!--No. of children under 18 years -->
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/EditTextMargin">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/underage_children"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:hint="@string/no_of_children_under_18" />
+
+        </android.support.design.widget.TextInputLayout>
+        <Button
+            android:id="@+id/saveButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center_horizontal"
+            style="@style/EditTextMargin"
+            android:text="@string/save_data" />
+    </LinearLayout>
+
+</ScrollView>
