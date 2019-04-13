@@ -23,7 +23,7 @@ import java.util.Map;
 import java.util.Objects;
 
 public class AgentActivity extends AppCompatActivity {
-    private static final String ID = "id";
+    private static final String ID = "id_agent";
     private static final String COUNTY = "county";
     private static final String SUB_COUNTY = "subCounty";
     private static final String PHONE = "phone";
@@ -61,9 +61,9 @@ public class AgentActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //  Perform validation and check if data is successfully saved then open main activity
-                validate();
                 saveToDatabase();
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
+
 
             }
         });
@@ -90,7 +90,7 @@ public class AgentActivity extends AppCompatActivity {
         agentData.put(PHONE, mPhoneNumber);
 
 //        Store data using a collection
-        //    TODO: Add a progress bar to show that the data is still getting saved
+
         mFirebaseFirestore.collection("agent")
                 .add(agentData)
                 .addOnSuccessListener(new OnSuccessListener <DocumentReference>() {
@@ -112,23 +112,28 @@ public class AgentActivity extends AppCompatActivity {
         if (mJobTitle.isEmpty()) {
             Toast.makeText(getApplicationContext(),  R.string.spinner_error, Toast.LENGTH_LONG).show();
             position.requestFocus();
-        } if (mID.isEmpty()) {
+        }
+        else if (mID.isEmpty()) {
             id.setError(getString(R.string.empty_error));
             id.requestFocus();
-        } if (mEducationLevel.isEmpty()) {
+        }
+        else if (mEducationLevel.isEmpty()) {
 
             Toast.makeText(getApplicationContext(),  R.string.spinner_error, Toast.LENGTH_LONG).show();
             education.requestFocus();
-        }  if (mNameOfCounty.isEmpty()) {
+        }
+        else if (mNameOfCounty.isEmpty()) {
             county.setError(getString(R.string.empty_error));
             county.requestFocus();
-        }  if (mNameOfSubCounty.isEmpty()) {
+        }
+        else if (mNameOfSubCounty.isEmpty()) {
             sub_county.setError(getString(R.string.empty_error));
             sub_county.requestFocus();
-        }  if (mPhoneNumber.isEmpty()) {
+        } else if (mPhoneNumber.isEmpty()) {
             phone.setError(getString(R.string.empty_error));
             phone.requestFocus();
         }
+
 
     }
 

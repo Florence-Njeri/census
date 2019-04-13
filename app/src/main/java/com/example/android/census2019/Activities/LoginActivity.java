@@ -73,11 +73,15 @@ public class LoginActivity extends AppCompatActivity  {
             if (resultCode == RESULT_OK) {
                 // If successfully signed in, go to the MainActivity
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                if(user!=null){
-                    startActivity(new Intent(getApplicationContext(),AgentActivity.class));
-                }
-                else{
+
+                if(user==null){
                     setUpFirebase();
+
+                }
+                //     For a new user
+                else{
+                    startActivity(new Intent(getApplicationContext(),MainActivity.class));
+
                 }
             }
             else {

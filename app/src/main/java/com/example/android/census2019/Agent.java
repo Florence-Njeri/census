@@ -1,31 +1,25 @@
 package com.example.android.census2019;
 
 public class Agent {
-String id;
-String phone;
-String county;
-String job;
+private String id;
+private String county;
+private String job_title;
     public Agent(){}
-    public Agent(String id,String phone, String county,String job){
+    public Agent(String id,String job_title,String county){
         this.id=id;
-        this.phone=phone;
         this.county=county;
-        this.job=job;
+        this.job_title=job_title;
     }
 
     public String getId() {
         return id;
     }
 
-    public String getPhone() {
-        return phone;
-    }
-
     public String getCounty() {
         return county;
     }
 
-    public String getJob() {
-        return job;
+    public String getJob_title() {
+        return job_title;
     }
 }

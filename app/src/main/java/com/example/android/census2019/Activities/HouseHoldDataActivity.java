@@ -57,7 +57,7 @@ public class HouseHoldDataActivity extends AppCompatActivity {
             public void onClick(View v) {
       //   TODO: Save data to FireStore database when all fields are filled in
 
-                validate();
+//                validate();
                 saveToDatabase();
             }
         });

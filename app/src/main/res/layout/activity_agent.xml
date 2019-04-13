@@ -32,7 +32,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/phone_number"
-            android:inputType="number" />
+             />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -47,7 +47,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/national_id"
-            android:inputType="number" />
+             />
     </android.support.design.widget.TextInputLayout>
 
     <Spinner
@@ -70,7 +70,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/county"
-            android:inputType="text" />
+            />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -86,7 +86,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/sub_county"
-            android:inputType="text" />
+          />
     </android.support.design.widget.TextInputLayout>
 
     <Button

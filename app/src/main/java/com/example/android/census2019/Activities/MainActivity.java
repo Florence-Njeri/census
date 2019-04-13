@@ -21,8 +21,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.android.census2019.Agent;
 import com.example.android.census2019.Household;
 import com.example.android.census2019.HouseholdAdapter;
 import com.example.android.census2019.R;
@@ -99,6 +101,43 @@ public class MainActivity extends AppCompatActivity
 
 //    TODO:    Update the view with some of the household data in a RecyclerView from the FireStore data
         readFromDatabase();
+
+        headerData(navigationView);
+    }
+
+    private void headerData(NavigationView navigationView) {
+
+        View headerView =  navigationView.getHeaderView(0);
+      final  TextView agent_job =headerView.findViewById(R.id.agent_job);
+      final  TextView agent_id =headerView.findViewById(R.id.header_id);
+      final  TextView agent_county =headerView.findViewById(R.id.header_county);
+
+
+        //        Read from firestore
+        mFirebaseFirestore.collection("agent")
+                .addSnapshotListener(new EventListener <QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                        assert queryDocumentSnapshots != null;
+                        if (queryDocumentSnapshots.isEmpty()) {
+                            assert e != null;
+                            Log.d(TAG, "Error" + e.getMessage());
+                        }
+                        for (DocumentChange doc : queryDocumentSnapshots.getDocumentChanges()) {
+                            Agent agentData = doc.getDocument().toObject(Agent.class);
+                            String job=agentData.getJob_title();
+                            String id=agentData.getId();
+                            String county=agentData.getCounty();
+//                                Household inventoryData = doc.getDocument().toObject(Household.class);
+                            Log.d(TAG, "DATA:" + agentData);
+                            agent_job.setText(job);
+                            agent_id.setText(id);
+                            agent_county.setText(county);
+
+                        }
+
+                    }
+                });
     }
 
     /**
