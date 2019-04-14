@@ -11,9 +11,9 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 public class HouseholdAdapter  extends RecyclerView.Adapter<HouseholdAdapter.HouseholdViewHolder>{
-//Constructor
-private Context mContext;
-private ArrayList<Household> mList;
+    //Constructor
+    private Context mContext;
+    private ArrayList<Household> mList;
 
     public HouseholdAdapter(Context context,ArrayList<Household> list){
         this.mContext=context;
@@ -32,7 +32,7 @@ private ArrayList<Household> mList;
     public void onBindViewHolder(@NonNull HouseholdViewHolder householdViewHolder, int position) {
         Household house=  mList.get(position);
 
-       householdViewHolder.head.setText(house.getHead());
+        householdViewHolder.head.setText(house.getHead());
         householdViewHolder.county.setText(house.getCounty());
         householdViewHolder.subCounty.setText(house.getSubCounty());
 
@@ -40,25 +40,26 @@ private ArrayList<Household> mList;
 
     @Override
     public int getItemCount() {
-        return  mList.size();
+        return   mList == null ? 0 : mList.size();
     }
     //View holder
     public static class HouseholdViewHolder extends RecyclerView.ViewHolder{
-    //Initialize the views
+        //Initialize the views
 
         TextView head;
         TextView county;
         TextView subCounty;
 
-    public HouseholdViewHolder(@NonNull View itemView) {
-        super(itemView);
-        //        Find the views by id
+        public HouseholdViewHolder(@NonNull View itemView) {
+            super(itemView);
+            //        Find the views by id
 
-        head=itemView.findViewById(R.id.head_placeholder);
-        county =itemView.findViewById(R.id.county_placeholder);
-        subCounty =itemView.findViewById(R.id.sub_county_placeholder);
+            head=itemView.findViewById(R.id.head_placeholder);
+            county =itemView.findViewById(R.id.county_placeholder);
+            subCounty =itemView.findViewById(R.id.sub_county_placeholder);
 
 
+        }
     }
 }
-}
+

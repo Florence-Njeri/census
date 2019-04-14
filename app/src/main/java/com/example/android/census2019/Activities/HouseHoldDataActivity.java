@@ -31,10 +31,10 @@ public class HouseHoldDataActivity extends AppCompatActivity {
     private static final String ID = "id";
     private static final String SPOUSES = "spouses";
     FirebaseFirestore db;
-        TextInputEditText householdHead,headID,county,subCounty,town,adultChildren,underageChildren;
-        Spinner spouses;
-        Button saveButton;
-        private final String TAG = this.getClass().getSimpleName();
+    TextInputEditText householdHead,headID,county,subCounty,town,adultChildren,underageChildren;
+    Spinner spouses;
+    Button saveButton;
+    private final String TAG = this.getClass().getSimpleName();
     private String mHeadOfTheHouse;
     private String mID;
     private String mNoOfSpouses;
@@ -55,10 +55,10 @@ public class HouseHoldDataActivity extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-      //   TODO: Save data to FireStore database when all fields are filled in
+                //   TODO: Save data to FireStore database when all fields are filled in
 
-//                validate();
-                saveToDatabase();
+                validate();
+
             }
         });
 
@@ -79,15 +79,6 @@ public class HouseHoldDataActivity extends AppCompatActivity {
     private void saveToDatabase() {
         //Initialize Firestore
         db= FirebaseFirestore.getInstance();
-        //Get the agents input
-        mHeadOfTheHouse = Objects.requireNonNull(householdHead.getText()).toString().trim();
-        mID = Objects.requireNonNull(headID.getText()).toString().trim();
-        mNoOfSpouses = spouses.getSelectedItem().toString().trim();
-        mNameOfCounty = Objects.requireNonNull(county.getText()).toString().trim();
-        mNameOfSubCounty = Objects.requireNonNull(subCounty.getText()).toString().trim();
-        mNameOfTown = Objects.requireNonNull(town.getText()).toString().trim();
-        mNoOfAdultChildren = Objects.requireNonNull(adultChildren.getText()).toString().trim();
-        mNoOfUnderageChildren = Objects.requireNonNull(underageChildren.getText()).toString().trim();
 
         //Add the agent input of the household data
         Map<String,Object> household=new HashMap<>();
@@ -102,66 +93,90 @@ public class HouseHoldDataActivity extends AppCompatActivity {
         //   Store input data in a document using collections
         db.collection("households")
                 .add(household)
-       //When you successfully add to firestore
-        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                //When you successfully add to firestore
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
 
 
-            @Override
-            public void onSuccess(DocumentReference documentReference) {
-                //Your code
-               Toast.makeText(HouseHoldDataActivity.this,"Data successfully updated to database",Toast.LENGTH_SHORT).show();
-            }
-        })
-       //   In case it fails to update
-        .addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-        //Your code
-                Toast.makeText(HouseHoldDataActivity.this,"An error occurred when updating the database please retry",Toast.LENGTH_SHORT).show();
-            }
-        });
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        //Your code
+                        Toast.makeText(HouseHoldDataActivity.this,"Data successfully updated to database",Toast.LENGTH_SHORT).show();
+                    }
+                })
+                //   In case it fails to update
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        //Your code
+                        Toast.makeText(HouseHoldDataActivity.this,"An error occurred when updating the database please retry",Toast.LENGTH_SHORT).show();
+                    }
+                });
 
 
 
     }
 
     private void validate() {
+        //Get the agents input
+        mHeadOfTheHouse = Objects.requireNonNull(householdHead.getText()).toString();
+        mID = Objects.requireNonNull(headID.getText()).toString();
+        mNoOfSpouses = spouses.getSelectedItem().toString();
+        mNameOfCounty = Objects.requireNonNull(county.getText()).toString();
+        mNameOfSubCounty = Objects.requireNonNull(subCounty.getText()).toString();
+        mNameOfTown = Objects.requireNonNull(town.getText()).toString();
+        mNoOfAdultChildren = Objects.requireNonNull(adultChildren.getText()).toString();
+        mNoOfUnderageChildren = Objects.requireNonNull(underageChildren.getText()).toString();
 
-        if(mHeadOfTheHouse.isEmpty()){
-           householdHead.setError(getString(R.string.empty_error));
-           householdHead.requestFocus();
+        boolean validationFail=false;
+
+        if(mHeadOfTheHouse.length()==0){
+            validationFail=true;
+            householdHead.setError(getString(R.string.empty_error));
+            householdHead.requestFocus();
         }
-        if(mID.isEmpty()){
+        if(mID.length()==0){
+            validationFail=true;
             headID.setError(getString(R.string.empty_error));
             headID.requestFocus();
         }
-         if(mNoOfSpouses.isEmpty()){
-
+        if(mNoOfSpouses.length()==0){
+            validationFail=true;
             Toast.makeText(getApplicationContext(), R.string.spinner_error,Toast.LENGTH_LONG).show();
             spouses.requestFocus();
         }
-        if(mNameOfCounty.isEmpty()){
+        if(mNameOfCounty.length()==0){
+            validationFail=true;
             county.setError(getString(R.string.empty_error));
             county.requestFocus();
         }
-        if(mNameOfSubCounty.isEmpty()){
+        if(mNameOfSubCounty.length()==0){
+            validationFail=true;
             subCounty.setError(getString(R.string.empty_error));
             subCounty.requestFocus();
         }
-         if(mNameOfTown.isEmpty()){
+        if(mNameOfTown.length()==0){
+            validationFail=true;
             subCounty.setError(getString(R.string.empty_error));
             subCounty.requestFocus();
         }
-         if(mNoOfAdultChildren.isEmpty()){
+        if(mNoOfAdultChildren.length()==0){
+            validationFail=true;
             adultChildren.setError(getString(R.string.empty_error));
             adultChildren.requestFocus();
         }
-          if(mNoOfUnderageChildren.isEmpty()){
+        if(mNoOfUnderageChildren.length()==0){
+            validationFail=true;
             underageChildren.setError(getString(R.string.empty_error));
             underageChildren.requestFocus();
         }
+//If all are valid then,
+        if (validationFail==false){
+            saveToDatabase();
+        }
 
     }
+
+
 
     private void spousesSpinner() {
         //Populate the spinner with data

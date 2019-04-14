@@ -1,11 +1,7 @@
 package com.example.android.census2019.Activities;
 
-import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -20,7 +16,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,24 +24,16 @@ import com.example.android.census2019.Household;
 import com.example.android.census2019.HouseholdAdapter;
 import com.example.android.census2019.R;
 import com.firebase.ui.auth.AuthUI;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentChange;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 import javax.annotation.Nullable;
-
-import static android.view.View.GONE;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -113,14 +100,15 @@ public class MainActivity extends AppCompatActivity
       final  TextView agent_county =headerView.findViewById(R.id.header_county);
 
 
-        //        Read from firestore
+        //        Read agent data from firestore
         mFirebaseFirestore.collection("agent")
                 .addSnapshotListener(new EventListener <QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                         assert queryDocumentSnapshots != null;
                         if (queryDocumentSnapshots.isEmpty()) {
-                            assert e != null;
+                            startActivity(new Intent(getApplicationContext(),AgentActivity.class));
+                           assert e != null;
                             Log.d(TAG, "Error" + e.getMessage());
                         }
                         for (DocumentChange doc : queryDocumentSnapshots.getDocumentChanges()) {
@@ -140,10 +128,7 @@ public class MainActivity extends AppCompatActivity
                 });
     }
 
-    /**
-     *  Only read from the database if there is an active /strong network
-     *  connection else display error to the user
-     */
+
     private void readFromDatabase() {
 
 //        Read from firestore
@@ -151,11 +136,8 @@ public class MainActivity extends AppCompatActivity
                 .addSnapshotListener(new EventListener <QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+
                         assert queryDocumentSnapshots != null;
-                        if (queryDocumentSnapshots.isEmpty()) {
-                            assert e != null;
-                            Log.d(TAG, "Error" + e.getMessage());
-                        }
                         for (DocumentChange doc : queryDocumentSnapshots.getDocumentChanges()) {
                             Household household = doc.getDocument().toObject(Household.class);
 
@@ -216,11 +198,9 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
 
-        if (id == R.id.nav_settings) {
-            Toast.makeText(this, "Settings Census 2019", Toast.LENGTH_SHORT).show();
+        if (id == R.id.nav_profile) {
+            Toast.makeText(this, "Agent Profile Census 2019", Toast.LENGTH_SHORT).show();
 
-        } else if (id == R.id.nav_share) {
-            Toast.makeText(this, "Share Content!! ", Toast.LENGTH_SHORT).show();
         }
 
 

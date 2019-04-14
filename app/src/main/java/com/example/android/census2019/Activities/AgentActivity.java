@@ -61,8 +61,7 @@ public class AgentActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //  Perform validation and check if data is successfully saved then open main activity
-                saveToDatabase();
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                validate();
 
 
             }
@@ -73,13 +72,7 @@ public class AgentActivity extends AppCompatActivity {
     private void saveToDatabase() {
 
 
-        //Get the input data
-        mJobTitle = position.getSelectedItem().toString().trim();
-        mEducationLevel = education.getSelectedItem().toString().trim();
-        mID = Objects.requireNonNull(id.getText()).toString().trim();
-        mNameOfCounty = Objects.requireNonNull(county.getText()).toString().trim();
-        mNameOfSubCounty = Objects.requireNonNull(sub_county.getText()).toString().trim();
-        mPhoneNumber = Objects.requireNonNull(phone.getText()).toString().trim();
+
 
         Map <String, String> agentData = new HashMap <>();
         agentData.put(JOB_TITLE, mID);
@@ -109,31 +102,48 @@ public class AgentActivity extends AppCompatActivity {
     }
 
     private void validate() {
+        //Get the input data
+        mJobTitle = position.getSelectedItem().toString().trim();
+        mEducationLevel = education.getSelectedItem().toString().trim();
+        mID = Objects.requireNonNull(id.getText()).toString().trim();
+        mNameOfCounty = Objects.requireNonNull(county.getText()).toString().trim();
+        mNameOfSubCounty = Objects.requireNonNull(sub_county.getText()).toString().trim();
+        mPhoneNumber = Objects.requireNonNull(phone.getText()).toString().trim();
+
+        boolean dataIsValidated=true;
         if (mJobTitle.isEmpty()) {
+            dataIsValidated=false;
             Toast.makeText(getApplicationContext(),  R.string.spinner_error, Toast.LENGTH_LONG).show();
             position.requestFocus();
         }
-        else if (mID.isEmpty()) {
+        if (mID.isEmpty()) {
+            dataIsValidated=false;
             id.setError(getString(R.string.empty_error));
             id.requestFocus();
         }
-        else if (mEducationLevel.isEmpty()) {
-
+        if (mEducationLevel.isEmpty()) {
+            dataIsValidated=false;
             Toast.makeText(getApplicationContext(),  R.string.spinner_error, Toast.LENGTH_LONG).show();
             education.requestFocus();
         }
-        else if (mNameOfCounty.isEmpty()) {
+        if (mNameOfCounty.isEmpty()) {
+            dataIsValidated=false;
             county.setError(getString(R.string.empty_error));
             county.requestFocus();
         }
-        else if (mNameOfSubCounty.isEmpty()) {
+        if (mNameOfSubCounty.isEmpty()) {
+            dataIsValidated=false;
             sub_county.setError(getString(R.string.empty_error));
             sub_county.requestFocus();
-        } else if (mPhoneNumber.isEmpty()) {
+        } if (mPhoneNumber.isEmpty()) {
+            dataIsValidated=false;
             phone.setError(getString(R.string.empty_error));
             phone.requestFocus();
         }
-
+        if(dataIsValidated==true){
+            saveToDatabase();
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+        }
 
     }
 
