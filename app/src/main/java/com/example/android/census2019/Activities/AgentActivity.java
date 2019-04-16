@@ -1,12 +1,14 @@
 package com.example.android.census2019.Activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.text.Editable;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -42,6 +44,7 @@ public class AgentActivity extends AppCompatActivity {
     private String mNameOfSubCounty;
     private String mPhoneNumber;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,14 +66,28 @@ public class AgentActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //  Perform validation and check if data is successfully saved then open main activity
-                validate();
 
+                //   First Check network connectivity if connected write to db else display toast
+
+                ConnectivityManager checkConnection = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+                assert checkConnection != null;
+                NetworkInfo activeNetwork = checkConnection.getActiveNetworkInfo();
+                if (activeNetwork != null && activeNetwork.isConnected()) {
+                    validate();
+                } else {
+
+                    Toast.makeText(AgentActivity.this, "Ensure you are connected to the internet!!", Toast.LENGTH_SHORT).show();
+                }
 
             }
         });
+
         spousesSpinner();
         enableStrictMode();
     }
+
+    //    Strict mode
     private void enableStrictMode() {
         //Only run when debugging or testing
         if (BuildConfig.DEBUG) {
@@ -120,37 +137,38 @@ public class AgentActivity extends AppCompatActivity {
         mNameOfSubCounty = Objects.requireNonNull(sub_county.getText()).toString().trim();
         mPhoneNumber = Objects.requireNonNull(phone.getText()).toString().trim();
 
-        boolean dataIsValidated=true;
+        boolean dataIsValidated = true;
         if (mJobTitle.isEmpty()) {
-            dataIsValidated=false;
-            Toast.makeText(getApplicationContext(),  R.string.spinner_error, Toast.LENGTH_LONG).show();
+            dataIsValidated = false;
+            Toast.makeText(getApplicationContext(), R.string.spinner_error, Toast.LENGTH_LONG).show();
             position.requestFocus();
         }
         if (mID.isEmpty()) {
-            dataIsValidated=false;
+            dataIsValidated = false;
             id.setError(getString(R.string.empty_error));
             id.requestFocus();
         }
         if (mEducationLevel.isEmpty()) {
-            dataIsValidated=false;
-            Toast.makeText(getApplicationContext(),  R.string.spinner_error, Toast.LENGTH_LONG).show();
+            dataIsValidated = false;
+            Toast.makeText(getApplicationContext(), R.string.spinner_error, Toast.LENGTH_LONG).show();
             education.requestFocus();
         }
         if (mNameOfCounty.isEmpty()) {
-            dataIsValidated=false;
+            dataIsValidated = false;
             county.setError(getString(R.string.empty_error));
             county.requestFocus();
         }
         if (mNameOfSubCounty.isEmpty()) {
-            dataIsValidated=false;
+            dataIsValidated = false;
             sub_county.setError(getString(R.string.empty_error));
             sub_county.requestFocus();
-        } if (mPhoneNumber.isEmpty()) {
-            dataIsValidated=false;
+        }
+        if (mPhoneNumber.isEmpty()) {
+            dataIsValidated = false;
             phone.setError(getString(R.string.empty_error));
             phone.requestFocus();
         }
-        if(dataIsValidated==true){
+        if (dataIsValidated == true) {
             saveToDatabase();
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
         }
@@ -171,4 +189,6 @@ public class AgentActivity extends AppCompatActivity {
         educationLevel.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerEducationLevel.setAdapter(educationLevel);
     }
+
+
 }

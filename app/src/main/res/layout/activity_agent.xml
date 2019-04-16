@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:layout_margin="16dp"
+    android:orientation="vertical"
     tools:context=".Activities.AgentActivity">
 
     <Spinner
@@ -24,30 +22,26 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-   >
+        android:layout_marginBottom="8dp">
 
         <android.support.design.widget.TextInputEditText
             android:id="@+id/agent_phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/phone_number"
-             />
+            android:hint="@string/phone_number" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/text_layout_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-       >
+        android:layout_marginTop="8dp">
 
         <android.support.design.widget.TextInputEditText
             android:id="@+id/agent_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/national_id"
-             />
+            android:hint="@string/national_id" />
     </android.support.design.widget.TextInputLayout>
 
     <Spinner
@@ -69,8 +63,7 @@
             android:id="@+id/agent_county"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/county"
-            />
+            android:hint="@string/county" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -78,16 +71,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-       >
+        android:layout_marginBottom="8dp">
 
         <android.support.design.widget.TextInputEditText
             android:id="@+id/sub_county"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/sub_county"
-          />
+            android:hint="@string/sub_county" />
     </android.support.design.widget.TextInputLayout>
+
 
     <Button
         android:id="@+id/saveAgentData"
@@ -97,8 +89,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:text="@string/save_data"
-       />
+        android:text="@string/save_data" />
 
 
 </LinearLayout>

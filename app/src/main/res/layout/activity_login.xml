@@ -48,7 +48,7 @@
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
 
             <Button
                 android:id="@+id/sign_in_button"
@@ -58,12 +58,13 @@
                 android:layout_marginTop="16dp"
                 android:text="@string/action_log_in"
                 android:textStyle="bold" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/new_use_sign_in"
                 android:gravity="center"
-                android:paddingTop="8dp"/>
+                android:paddingTop="8dp"
+                android:text="@string/new_use_sign_in" />
 
             <Button
                 android:id="@+id/sign_new_user"

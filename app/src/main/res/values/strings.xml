@@ -42,6 +42,10 @@
     <string name="share">Share</string>
     <string name="new_use_sign_in">New Use? Sign In</string>
     <string name="enter_your_national_id">Enter your National ID</string>
+    <string name="voice_recorder">voice recorder</string>
+    <string name="record_audio">Record Audio</string>
+    <string name="audio_placeholder">Display Audio Recording text here</string>
+    <string name="audio_image">audio image</string>
     <!--Spinner Spouses data-->
 
     <string-array name="spouses_arrays">

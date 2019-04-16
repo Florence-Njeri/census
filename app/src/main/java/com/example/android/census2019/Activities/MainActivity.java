@@ -30,6 +30,7 @@ import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -58,6 +59,7 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         //Initialize firestore
         mFirebaseFirestore = FirebaseFirestore.getInstance();
+        firestoreDateObject();
         //        RecyclerView
         mRecyclerView = findViewById(R.id.recyclerView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -84,7 +86,7 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-        //      TODO: Open a new activity so you can display household details
+                //      TODO: Open a new activity so you can display household details
                 startActivity(new Intent(getApplicationContext(), HouseHoldDataActivity.class));
             }
         });
@@ -94,6 +96,14 @@ public class MainActivity extends AppCompatActivity
 
         headerData(navigationView);
         enableStrictMode();
+
+    }
+
+    private void firestoreDateObject() {
+        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+                .setTimestampsInSnapshotsEnabled(true)
+                .build();
+        mFirebaseFirestore.setFirestoreSettings(settings);
     }
 
     private void enableStrictMode() {
@@ -122,9 +132,8 @@ public class MainActivity extends AppCompatActivity
                     public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                         assert queryDocumentSnapshots != null;
                         if (queryDocumentSnapshots.isEmpty()) {
-                            //           If the query returns a null document
+                            //     If the query returns a null document go to LogIn activity so they can sign up
                             startActivity(new Intent(getApplicationContext(), AgentActivity.class));
-                            Log.d(TAG, "Error" + e.getStackTrace());
                         }
                         for (DocumentChange doc : queryDocumentSnapshots.getDocumentChanges()) {
                             Agent agentData = doc.getDocument().toObject(Agent.class);

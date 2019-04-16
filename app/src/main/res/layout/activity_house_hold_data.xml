@@ -13,117 +13,136 @@
         android:orientation="vertical">
         <!--HouseHold head EditBox-->
         <android.support.design.widget.TextInputLayout
+            style="@style/EditTextMargin"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/EditTextMargin">
+            android:layout_height="wrap_content">
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/household_head"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text"
-                android:hint="@string/household_head" />
+                android:hint="@string/household_head"
+                android:inputType="text" />
 
         </android.support.design.widget.TextInputLayout>
         <!--ID editView-->
         <android.support.design.widget.TextInputLayout
+            style="@style/EditTextMargin"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/EditTextMargin">
+            android:layout_height="wrap_content">
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/id"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number"
-                android:hint="@string/id" />
+                android:hint="@string/id"
+                android:inputType="number" />
 
         </android.support.design.widget.TextInputLayout>
         <!--Spouses Spinner-->
         <Spinner
             android:id="@+id/spinnerSpouses"
+            style="@style/EditTextMargin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            style="@style/EditTextMargin"/>
+            android:layout_weight="1" />
 
         <!-- County EditText -->
         <android.support.design.widget.TextInputLayout
+            style="@style/EditTextMargin"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/EditTextMargin">
+            android:layout_height="wrap_content">
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/county"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text"
-                android:hint="@string/county" />
+                android:hint="@string/county"
+                android:inputType="text" />
         </android.support.design.widget.TextInputLayout>
         <!-- Sub-County EditText -->
         <android.support.design.widget.TextInputLayout
+            style="@style/EditTextMargin"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/EditTextMargin">
+            android:layout_height="wrap_content">
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/sub_county"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text"
-                android:hint="@string/sub_county" />
+                android:hint="@string/sub_county"
+                android:inputType="text" />
         </android.support.design.widget.TextInputLayout>
         <!-- Town EditText -->
         <android.support.design.widget.TextInputLayout
+            style="@style/EditTextMargin"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-             style="@style/EditTextMargin">
+            android:layout_height="wrap_content">
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/town"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text"
-                android:hint="@string/town" />
+                android:hint="@string/town"
+                android:inputType="text" />
 
 
         </android.support.design.widget.TextInputLayout>
         <!--No. of adult children-->
         <android.support.design.widget.TextInputLayout
+            style="@style/EditTextMargin"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/EditTextMargin">
+            android:layout_height="wrap_content">
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/adult_children"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number"
-                android:hint="@string/no_of_adult_children" />
+                android:hint="@string/no_of_adult_children"
+                android:inputType="number" />
 
         </android.support.design.widget.TextInputLayout>
 
         <!--No. of children under 18 years -->
         <android.support.design.widget.TextInputLayout
+            style="@style/EditTextMargin"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/EditTextMargin">
+            android:layout_height="wrap_content">
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/underage_children"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number"
-                android:hint="@string/no_of_children_under_18" />
+                android:hint="@string/no_of_children_under_18"
+                android:inputType="number" />
 
         </android.support.design.widget.TextInputLayout>
-        <Button
-            android:id="@+id/saveButton"
+
+        <ImageButton
+            android:id="@+id/recordAudio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_gravity="center_horizontal"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:contentDescription="@string/audio_image"
+            android:src="@drawable/ic_mic" />
+
+        <TextView
+            android:id="@+id/display_audio_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            tools:text="@string/audio_placeholder" />
+
+        <Button
+            android:id="@+id/saveButton"
             style="@style/EditTextMargin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1"
             android:text="@string/save_data" />
     </LinearLayout>
 
