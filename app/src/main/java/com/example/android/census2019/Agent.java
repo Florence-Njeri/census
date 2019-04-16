@@ -11,10 +11,9 @@ public class Agent {
         this.job_title=job_title;
     }
 
-    public String getId() {
+    public String getId_agent() {
         return id_agent;
     }
-
 
     public String getCounty() {
         return county;

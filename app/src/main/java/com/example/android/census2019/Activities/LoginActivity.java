@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +21,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
@@ -32,31 +34,27 @@ import java.util.Collections;
 import java.util.List;
 
 import com.example.android.census2019.Agent;
+import com.example.android.census2019.BuildConfig;
 import com.example.android.census2019.R;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import javax.annotation.Nullable;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity implements LoaderCallbacks <Cursor> {
+public class LoginActivity extends AppCompatActivity {
 
-    /**
-     * Id to identity READ_CONTACTS permission request.
-     */
-    private static final int REQUEST_READ_CONTACTS = 0;
-
-    /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world"
-    };
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -69,8 +67,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks 
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener authStateListener;
     private int RC_SIGN_IN = 1;
-    private FirebaseUser mFirebaseUser;
-    private String mAgentId;
+    private FirebaseFirestore mFirebaseFirestore;
+    private final String TAG = "LoginActivity";
+    private String mId_agent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,11 +77,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks 
         setContentView(R.layout.activity_login);
 //        Initialize Firebase Auth
         firebaseAuth = FirebaseAuth.getInstance();
+        mFirebaseFirestore=FirebaseFirestore.getInstance();
         // Set up the login form.
         mIdView = findViewById(R.id.sign_in_id);
-
-//        Get user input ID
-        mAgentId=mIdView.getText().toString();
 
         Button signInButton = findViewById(R.id.sign_in_button);
         signInButton.setOnClickListener(new OnClickListener() {
@@ -106,8 +103,23 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks 
             }
         });
 
+        enableStrictMode();
+        readIdFromDatabase();
 
     }
+
+    //    Strict mode
+    private void enableStrictMode() {
+        //Only run when debugging or testing
+        if (BuildConfig.DEBUG) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+                    .detectAll()
+                    .penaltyLog()
+                    .build();
+            StrictMode.setThreadPolicy(policy);
+        }
+    }
+
 
     /**
      * Authenticate a new user when they are signing in
@@ -140,50 +152,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks 
                 assert user != null;
 //                Go to agent activity
                 startActivity(new Intent(getApplicationContext(), AgentActivity.class));
-                // ...
+
             } else {
                 Toast.makeText(this, "Sign In Failed ,please try again!!", Toast.LENGTH_SHORT).show();
             }
         }
     }
-
-
-
-
-    private boolean mayRequestContacts() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            return true;
-        }
-        if (checkSelfPermission(READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
-            return true;
-        }
-        if (shouldShowRequestPermissionRationale(READ_CONTACTS)) {
-            Snackbar.make(mIdView, R.string.permission_rationale, Snackbar.LENGTH_INDEFINITE)
-                    .setAction(android.R.string.ok, new View.OnClickListener() {
-                        @Override
-                        @TargetApi(Build.VERSION_CODES.M)
-                        public void onClick(View v) {
-                            requestPermissions(new String[]{READ_CONTACTS}, REQUEST_READ_CONTACTS);
-                        }
-                    });
-        } else {
-            requestPermissions(new String[]{READ_CONTACTS}, REQUEST_READ_CONTACTS);
-        }
-        return false;
-    }
-
-    /**
-     * Callback received when a permissions request has been completed.
-     */
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        if (requestCode == REQUEST_READ_CONTACTS) {
-            if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            }
-        }
-    }
-
 
     /**
      * Attempts to sign in or register the account specified by the login form.
@@ -213,12 +187,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks 
             cancel = true;
 
         }
-        else {
-            //   Get the user's id and if input matches go to main Activity
-            if(mAgentId.equals(new Agent().getId())){
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
-            }
-        }
+
 
         if (cancel) {
             // There was an error; don't attempt login and focus the first
@@ -232,7 +201,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks 
             mAuthTask.execute((Void) null);
         }
     }
-
 
 
     /**
@@ -271,59 +239,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks 
         }
     }
 
-    @Override
-    public Loader <Cursor> onCreateLoader(int i, Bundle bundle) {
-        return new CursorLoader(this,
-                // Retrieve data rows for the device user's 'profile' contact.
-                Uri.withAppendedPath(ContactsContract.Profile.CONTENT_URI,
-                        ContactsContract.Contacts.Data.CONTENT_DIRECTORY), ProfileQuery.PROJECTION,
-
-                // Select only email addresses.
-                ContactsContract.Contacts.Data.MIMETYPE +
-                        " = ?", new String[]{ContactsContract.CommonDataKinds.Email
-                .CONTENT_ITEM_TYPE},
-
-                // Show primary email addresses first. Note that there won't be
-                // a primary email address if the user hasn't specified one.
-                ContactsContract.Contacts.Data.IS_PRIMARY + " DESC");
-    }
-
-    @Override
-    public void onLoadFinished(Loader <Cursor> cursorLoader, Cursor cursor) {
-        List <String> emails = new ArrayList <>();
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            emails.add(cursor.getString(ProfileQuery.ADDRESS));
-            cursor.moveToNext();
-        }
-
-        addEmailsToAutoComplete(emails);
-    }
-
-    @Override
-    public void onLoaderReset(Loader <Cursor> cursorLoader) {
-
-    }
-
-    private void addEmailsToAutoComplete(List <String> emailAddressCollection) {
-        //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
-        ArrayAdapter <String> adapter =
-                new ArrayAdapter <>(LoginActivity.this,
-                        android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
-
-        mIdView.setAdapter(adapter);
-    }
-
-
-    private interface ProfileQuery {
-        String[] PROJECTION = {
-                ContactsContract.CommonDataKinds.Email.ADDRESS,
-                ContactsContract.CommonDataKinds.Email.IS_PRIMARY,
-        };
-
-        int ADDRESS = 0;
-        int IS_PRIMARY = 1;
-    }
 
     /**
      * Represents an asynchronous login/registration task used to authenticate
@@ -360,7 +275,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks 
             showProgress(false);
 
             if (success) {
-                finish();
+                //   Get the user's id and if input matches go to main Activity
+//        Get user input ID
+                String agentId = mIdView.getText().toString();
+
+
+                if (agentId.equals(mId_agent)) {
+                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                } else {
+                    Toast.makeText(getApplicationContext(), "Incorrect ID entered .Try again or Sign in if you are a new user", Toast.LENGTH_SHORT).show();
+                }
             }
 
         }
@@ -370,6 +294,34 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks 
             mAuthTask = null;
             showProgress(false);
         }
+    }
+
+    private void readIdFromDatabase() {
+        //GEt ID input from firestore
+
+        mFirebaseFirestore.collection("agent")
+                .addSnapshotListener(new EventListener <QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                        assert queryDocumentSnapshots != null;
+                        if (queryDocumentSnapshots.isEmpty()) {
+                            //           If the query returns a null document
+                            startActivity(new Intent(getApplicationContext(), AgentActivity.class));
+                            Log.d(TAG, "Error" + e.getStackTrace());
+                        }
+                        for (DocumentChange doc : queryDocumentSnapshots.getDocumentChanges()) {
+                            Agent agentData = doc.getDocument().toObject(Agent.class);
+
+                            mId_agent = agentData.getId_agent();
+
+                            //        Household inventoryData = doc.getDocument().toObject(Household.class);
+                            Log.d(TAG, "DATA:" + mId_agent);
+
+
+                        }
+
+                    }
+                });
     }
 }
 

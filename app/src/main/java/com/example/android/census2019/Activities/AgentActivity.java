@@ -1,6 +1,7 @@
 package com.example.android.census2019.Activities;
 
 import android.content.Intent;
+import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +13,7 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.android.census2019.BuildConfig;
 import com.example.android.census2019.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -67,16 +69,24 @@ public class AgentActivity extends AppCompatActivity {
             }
         });
         spousesSpinner();
+        enableStrictMode();
+    }
+    private void enableStrictMode() {
+        //Only run when debugging or testing
+        if (BuildConfig.DEBUG) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+                    .detectAll()
+                    .penaltyLog()
+                    .build();
+            StrictMode.setThreadPolicy(policy);
+        }
     }
 
     private void saveToDatabase() {
 
-
-
-
         Map <String, String> agentData = new HashMap <>();
-        agentData.put(JOB_TITLE, mID);
-        agentData.put(EDUCATION, mID);
+        agentData.put(JOB_TITLE, mJobTitle);
+        agentData.put(EDUCATION, mEducationLevel);
         agentData.put(ID, mID);
         agentData.put(COUNTY, mNameOfCounty);
         agentData.put(SUB_COUNTY, mNameOfSubCounty);
@@ -152,11 +162,11 @@ public class AgentActivity extends AppCompatActivity {
         Spinner spinnerJobPosition = findViewById(R.id.spinnerJobTitle);
         Spinner spinnerEducationLevel = findViewById(R.id.spinnerEducation);
 //        TODO: Remove repetition
-        ArrayAdapter <CharSequence> jobPosition = ArrayAdapter.createFromResource(this, R.array.spouses_arrays, android.R.layout.simple_spinner_item);
+        ArrayAdapter <CharSequence> jobPosition = ArrayAdapter.createFromResource(this, R.array.job_positions_array, android.R.layout.simple_spinner_item);
         //Display the array as a dropDown list
         jobPosition.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerJobPosition.setAdapter(jobPosition);
-        ArrayAdapter <CharSequence> educationLevel = ArrayAdapter.createFromResource(this, R.array.spouses_arrays, android.R.layout.simple_spinner_item);
+        ArrayAdapter <CharSequence> educationLevel = ArrayAdapter.createFromResource(this, R.array.education_level_array, android.R.layout.simple_spinner_item);
         //Display the array as a dropDown list
         educationLevel.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerEducationLevel.setAdapter(educationLevel);

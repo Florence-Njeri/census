@@ -2,6 +2,7 @@ package com.example.android.census2019.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -20,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.census2019.Agent;
+import com.example.android.census2019.BuildConfig;
 import com.example.android.census2019.Household;
 import com.example.android.census2019.HouseholdAdapter;
 import com.example.android.census2019.R;
@@ -45,6 +47,7 @@ public class MainActivity extends AppCompatActivity
     FirebaseFirestore mFirebaseFirestore;
     private String TAG = "Main Activity";
     private RecyclerView mRecyclerView;
+    public String mId_agent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,23 +84,35 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                TODO: Open a new activity so you can display household details
+        //      TODO: Open a new activity so you can display household details
                 startActivity(new Intent(getApplicationContext(), HouseHoldDataActivity.class));
             }
         });
 
-//    TODO:    Update the view with some of the household data in a RecyclerView from the FireStore data
+        //    TODO:    Update the view with some of the household data in a RecyclerView from the FireStore data
         readFromDatabase();
 
         headerData(navigationView);
+        enableStrictMode();
+    }
+
+    private void enableStrictMode() {
+        //Only run when debugging or testing
+        if (BuildConfig.DEBUG) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+                    .detectAll()
+                    .penaltyLog()
+                    .build();
+            StrictMode.setThreadPolicy(policy);
+        }
     }
 
     private void headerData(NavigationView navigationView) {
 
-        View headerView =  navigationView.getHeaderView(0);
-      final  TextView agent_job =headerView.findViewById(R.id.agent_job);
-      final  TextView agent_id =headerView.findViewById(R.id.header_id);
-      final  TextView agent_county =headerView.findViewById(R.id.header_county);
+        View headerView = navigationView.getHeaderView(0);
+        final TextView agent_job = headerView.findViewById(R.id.agent_job);
+        final TextView agent_id = headerView.findViewById(R.id.header_id);
+        final TextView agent_county = headerView.findViewById(R.id.header_county);
 
 
         //        Read agent data from firestore
@@ -107,19 +122,19 @@ public class MainActivity extends AppCompatActivity
                     public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                         assert queryDocumentSnapshots != null;
                         if (queryDocumentSnapshots.isEmpty()) {
-                            startActivity(new Intent(getApplicationContext(),AgentActivity.class));
-                           assert e != null;
-                            Log.d(TAG, "Error" + e.getMessage());
+                            //           If the query returns a null document
+                            startActivity(new Intent(getApplicationContext(), AgentActivity.class));
+                            Log.d(TAG, "Error" + e.getStackTrace());
                         }
                         for (DocumentChange doc : queryDocumentSnapshots.getDocumentChanges()) {
                             Agent agentData = doc.getDocument().toObject(Agent.class);
-                            String job=agentData.getJob_title();
-                            String id=agentData.getId();
-                            String county=agentData.getCounty();
-//                                Household inventoryData = doc.getDocument().toObject(Household.class);
+                            String job = agentData.getJob_title();
+                            mId_agent = agentData.getId_agent();
+                            String county = agentData.getCounty();
+                            //        Household inventoryData = doc.getDocument().toObject(Household.class);
                             Log.d(TAG, "DATA:" + agentData);
                             agent_job.setText(job);
-                            agent_id.setText(id);
+                            agent_id.setText(mId_agent);
                             agent_county.setText(county);
 
                         }
@@ -131,7 +146,7 @@ public class MainActivity extends AppCompatActivity
 
     private void readFromDatabase() {
 
-//        Read from firestore
+        //        Read from firestore
         mFirebaseFirestore.collection("households")
                 .addSnapshotListener(new EventListener <QuerySnapshot>() {
                     @Override
@@ -141,7 +156,6 @@ public class MainActivity extends AppCompatActivity
                         for (DocumentChange doc : queryDocumentSnapshots.getDocumentChanges()) {
                             Household household = doc.getDocument().toObject(Household.class);
 
-//                                Household inventoryData = doc.getDocument().toObject(Household.class);
                             Log.d(TAG, "DATA:" + household);
 
                             list.add(household);

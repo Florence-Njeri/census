@@ -20,7 +20,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal|center_vertical"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:text="@string/nav_header_title"
         android:textColor="@color/drawerText"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         tools:text="Agent Job Title" />
@@ -31,13 +30,13 @@
         android:layout_height="wrap_content"
         android:textColor="@color/drawerText"
         android:layout_gravity="center_horizontal"
-        android:text="@string/id" />
+        tools:text="@string/id" />
     <TextView
         android:id="@+id/header_county"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/drawerText"
         android:layout_gravity="center_horizontal"
-        android:text="@string/county" />
+        tools:text="@string/county" />
 
 </LinearLayout>

@@ -46,6 +46,7 @@
 
     <string-array name="spouses_arrays">
         <item>Number of spouses</item>
+        <item>N/A</item>
         <item>1</item>
         <item>2</item>
         <item>3</item>
